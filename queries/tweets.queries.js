@@ -1,9 +1,21 @@
 const Tweet = require('../database/models/tweet.model');
 
+exports.getUserTweetsFormAuthorId = (authorId) => {
+    return Tweet.find({ author: authorId }).populate('author');
+}
+exports.getCurrentUserTweetsWithFollowing = (user) => {
+    return Tweet.find({ author: { $in: [ ...user.following, user._id ] }}).populate('author');
+}
 
 exports.updateTweet = (tweetId, tweet) => {
     return Tweet.findByIdAndUpdate(tweetId, { $set: tweet }, { runValidators: true });
 }
+
+
+exports.getUserTweetsFormAuthorId = (authorId) => {
+    return Tweet.find({ author: authorId }).populate('author');
+}
+
 
 exports.getTweet = (tweetId) => {
     return Tweet.findOne({ _id: tweetId }).exec();
